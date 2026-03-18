@@ -1,0 +1,24 @@
+# Regra de Criação e Alteração de Páginas com Stitch
+
+Sempre que a tarefa incluir a criação ou a alteração de uma página de interface de usuário (UI), siga **obrigatoriamente** as seguintes diretrizes:
+
+1. **Utilização do Stitch MCP:**
+   - Nunca inicie escrevendo código de front-end diretamente se estiver criando ou remodelando uma página inteira sem antes garantir ou consultar o design via Stitch.
+   - Utilize as ferramentas do Stitch MCP para:
+     - Encontrar projetos (`mcp_StitchMCP_list_projects`).
+     - Criar ou editar telas (`mcp_StitchMCP_generate_screen_from_text`, `mcp_StitchMCP_edit_screens`).
+     - Recuperar informações sobre as telas finalizadas (`mcp_StitchMCP_get_screen`, `mcp_StitchMCP_list_screens`).
+
+2. **Adoção Pró-ativa das Habilidades (Skills):**
+   - Utilize sempre as skills disponíveis no assistente que forem necessárias e úteis para melhorar a qualidade e assertividade do resultado.
+   - **`enhance-prompt`**: Use esta skill para transformar ideias vagas de UI do usuário em prompts ricos, específicos e otimizados antes de chamar as ferramentas de geração do Stitch.
+   - **`stitch-design`**: Empregue esta skill como ponto de entrada unificado para trabalho com design, síntese do design system (`DESIGN.md`), e geração de telas em alta fidelidade.
+   - **`design-md`**: Use para analisar projetos do Stitch e abstraí-los em um arquivo semântico de design (`DESIGN.md`).
+   - **`react:components`**: Para converter designs prontos no Stitch em componentes modulares e estruturados (se for a stack atual).
+   - **`stitch-loop`**: Adote-a se você precisar desenvolver o site de foma contínua dividindo os passos com o padrão baton-passing loop.
+
+3. **Passo a Passo Base para Criação/Alteração:**
+   - **Passo 1 (Refinamento):** Analise os requisitos da tela e aplique as skills `enhance-prompt` e `stitch-design` para redigir a instrução perfeita que será enviada à IA do Stitch. Priorize estética premium, rica, dinâmica e consistente.
+   - **Passo 2 (Contexto):** Verifique se o projeto atual foi identificado e liste as telas (`mcp_StitchMCP_list_screens`) em busca do contexto de estilo ou para edição de tela específica. 
+   - **Passo 3 (Ideação e Geração no MCP):** Envie o prompt enriquecido chamando `mcp_StitchMCP_generate_screen_from_text` (para páginas novas) ou `mcp_StitchMCP_edit_screens` (para alterações em páginas existentes). Apresente as sugestões retornadas e aguarde aprovação caso necessário. Lembre-se que as ferramentas do Stitch levam alguns minutos; evite re-tentativas impacientes e aguarde o retorno ou verifique depois via `get_screen`.
+   - **Passo 4 (Transcrição para Código Frontend):** Somente após o design estar consolidado e satisfativo no Stitch, converta ou extraia as telas usando o código apropriado aplicando as ferramentas do agente ou outras skills.
