@@ -1,0 +1,367 @@
+<html lang="pt-br"><head></head><body class="bg-brand-bg text-brand-slate antialiased">```html
+
+
+
+    <meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DossiêAI - Gestão de Estagiários</title>
+<!-- Tailwind CSS v3 CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                brand: {
+                  primary: '#6366F1', // Indigo
+                  secondary: '#818CF8', // Soft Violet
+                  slate: '#1E293B',
+                  gray: '#64748B',
+                  bg: '#F1F5F9',
+                  border: '#E2E8F0',
+                  success: '#10B981', // Emerald
+                  warning: '#F59E0B',
+                  danger: '#EF4444'
+                }
+              },
+              fontFamily: {
+                sans: ['Inter', 'system-ui', 'sans-serif'],
+              },
+              borderRadius: {
+                'card': '12px',
+              }
+            }
+          }
+        }
+    </script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+        .card-hover:hover { transform: translateY(-2px); transition: all 300ms ease; }
+        .sidebar-active { background-color: #6366F1; color: white; }
+    </style>
+<div class="flex h-screen overflow-hidden">
+<!-- BEGIN: Sidebar Navigation -->
+<aside class="w-[240px] bg-white border-r border-brand-border flex flex-col flex-shrink-0 transition-all duration-300">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h1 class="text-xl font-bold text-brand-slate tracking-tight">DossiêAI</h1>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-6 overflow-y-auto custom-scrollbar">
+<!-- GENERAL -->
+<div>
+<p class="px-4 text-[11px] font-bold text-brand-gray uppercase tracking-wider mb-3">General</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="dashboard_principal.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Home
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2.5 sidebar-active rounded-lg font-medium text-sm transition-all shadow-sm shadow-brand-primary/20" href="listagem_estagiarios.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Estagiários
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="analise_ia_exportacao.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Analytics
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="analise_ia_exportacao.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Reports
+                    </a>
+</div>
+</div>
+<!-- PERSONAL SPACE -->
+<div>
+<p class="px-4 text-[11px] font-bold text-brand-gray uppercase tracking-wider mb-3">Personal Space</p>
+<div class="space-y-1">
+<div class="flex items-center justify-between px-4 py-2 text-sm text-brand-gray">
+<span class="flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Team</span>
+<div class="flex -space-x-2">
+<img alt="Avatar" class="w-6 h-6 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4nfGiswpHa0w0ftdnt5rYx5t1tOOkkE6MC7tLATFxJbP7_AvRIGLircNGEaF90QIgPYbb6jzEQw5zrE12FaOl-UeFbmWKvDCzEouvANAaTijKwdXoynO8pHWbyKQrPpg0ehYh3J8pRlWo7CmMWQUY8iNnhov3OOBo4jJNtaE25tzqZ4_AT_E4fKyTtEYqSjGzjdt90nZ3QIe7zyDmvLYGnCcrfXYAzPh0ksbvP09TrgYh9GL72IdMu83A1-1P4zQ6jvQeLw3Ky3Ya"/>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-brand-primary text-[10px] text-white flex items-center justify-center font-bold">+3</div>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Dossiês
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Documentos
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Performance
+                    </a>
+</div>
+</div>
+<!-- PLATFORM -->
+<div>
+<p class="px-4 text-[11px] font-bold text-brand-gray uppercase tracking-wider mb-3">Platform</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Settings
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-gray hover:bg-slate-50 hover:text-brand-primary rounded-lg font-medium text-sm transition-all" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Support
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-brand-danger hover:bg-red-50 rounded-lg font-medium text-sm transition-all" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Log out
+                    </a>
+</div>
+</div>
+</nav>
+<div class="p-4">
+<div class="bg-gradient-to-br from-brand-primary to-brand-secondary p-4 rounded-xl text-white shadow-lg">
+<p class="text-xs font-bold opacity-80 uppercase mb-1">Scale Your Program</p>
+<p class="text-sm font-semibold mb-3">Upgrade to Enterprise for unlimited trainees.</p>
+<button class="w-full bg-white text-brand-primary py-2 rounded-lg text-xs font-bold hover:bg-opacity-90 transition-colors">Upgrade Now</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- HEADER -->
+<header class="h-[72px] bg-white border-b border-brand-border flex items-center justify-between px-8 flex-shrink-0">
+<div class="flex items-center gap-3 text-brand-gray font-medium text-sm">
+<svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Segunda-feira, 17 de Março
+            </div>
+<div class="max-w-md w-full relative group">
+<span class="absolute inset-y-0 left-3 flex items-center">
+<svg class="h-4 w-4 text-brand-gray group-focus-within:text-brand-primary transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="block w-full pl-10 pr-4 py-2 border border-brand-border rounded-full bg-slate-50 text-sm placeholder-brand-gray focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all" placeholder="Buscar estagiários, relatórios..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-brand-gray hover:text-brand-primary transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-2 right-2 w-2 h-2 bg-brand-danger rounded-full border-2 border-white"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-brand-border">
+<div class="text-right hidden xl:block">
+<p class="text-xs font-bold text-brand-slate leading-none">Sarah Jenkins</p>
+<p class="text-[10px] text-brand-gray mt-1 font-medium">Program Director</p>
+</div>
+<img alt="User" class="h-10 w-10 rounded-full border border-brand-border object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7teaYYJ-LTRernI9j5czUhO9JkCs8pLcx32EvPnzOD5IDRuVgG5uz6V7waH-1Mnw-uVCc1tLheqRorxqSDLtic_lpg3uc_OdIU2d7AEf_FtcQq0w4OmhafVnCTJO5astHTbNY7Mfbr9V8meGPUxijQA1-MGsA7awSvWkUWOvV9efDCTn307LXJHfqAr7urs5aoG5CxmzDFuf3GwJrA93fa62Auki5f03udToT9dd9BbPdP-C4r1wi56b-cduL1Vn235wGO1_kqZzB"/>
+</div>
+</div>
+</header>
+<!-- CONTENT AREA -->
+<div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+<div class="max-w-[1440px] mx-auto">
+<!-- PAGE HEADER -->
+<section class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<div>
+<h2 class="text-2xl font-bold text-brand-slate">Gestão de Estagiários</h2>
+<p class="text-brand-gray text-sm font-medium">Monitore e gerencie o desempenho dos estagiários.</p>
+</div>
+<button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-primary hover:bg-brand-primary/90 text-white font-bold rounded-lg transition-all shadow-md shadow-brand-primary/20">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Adicionar Estagiário
+                    </button>
+</section>
+<!-- FILTERS -->
+<section class="bg-white p-4 rounded-xl border border-brand-border mb-8 shadow-sm flex flex-col md:flex-row gap-4 items-center">
+<div class="relative flex-1 w-full">
+<span class="absolute inset-y-0 left-3 flex items-center text-brand-gray">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="block w-full pl-10 pr-3 py-2.5 border border-brand-border rounded-lg bg-slate-50 text-sm focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all" placeholder="Buscar estagiários por nome ou ID..." type="text"/>
+</div>
+<div class="flex flex-wrap gap-3 w-full md:w-auto">
+<select class="block w-full md:w-44 pl-3 pr-10 py-2.5 border border-brand-border rounded-lg text-sm bg-slate-50 focus:ring-brand-primary/20 focus:border-brand-primary">
+<option>Department</option>
+<option>Engineering</option>
+<option>Product</option>
+<option>Marketing</option>
+</select>
+<select class="block w-full md:w-40 pl-3 pr-10 py-2.5 border border-brand-border rounded-lg text-sm bg-slate-50 focus:ring-brand-primary/20 focus:border-brand-primary">
+<option>Rating</option>
+<option>4+ Stars</option>
+<option>3+ Stars</option>
+</select>
+<button class="flex items-center justify-center gap-2 px-4 py-2.5 text-brand-slate bg-white hover:bg-slate-50 border border-brand-border rounded-lg text-sm font-bold transition-all whitespace-nowrap">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            Filtros Avançados
+                        </button>
+</div>
+</section>
+<!-- TABLE CARD -->
+<section class="bg-white rounded-xl border border-brand-border shadow-sm overflow-hidden mb-8">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 border-b border-brand-border">
+<th class="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-brand-gray">Nome</th>
+<th class="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-brand-gray">Departamento</th>
+<th class="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-brand-gray">Data de Início</th>
+<th class="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-brand-gray">Avaliação Média</th>
+<th class="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-brand-gray">Status</th>
+<th class="px-6 py-4 text-[11px] font-bold uppercase tracking-wider text-brand-gray text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-brand-border">
+<!-- Johnathan Doe -->
+<tr class="hover:bg-slate-50/80 transition-all cursor-pointer group" onclick="window.location.href='perfil_estagiario.html'">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<img alt="Johnathan" class="h-10 w-10 rounded-full border border-brand-border object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHcGGDtdFYEzQzHWxrSRU3eVZM-fpznXDuzL2Z6FyEt2cvg7uEyrPREI3gvX-PbR-HtdCkAkkoxV7BPNhz2jCeO0svW1vlG7YHXaPG6SjMruXzWrT7EYGRnl-nh2Xl34GEgz4s-BCgBZE6DsmTvRJTv5NNXe2LsGPTRw9PtkrRbnJpQvKd3XcZLhLpUxUHdgyo1waHW1mVnlshpLnSauCbfgMAOrdN22NYZS9QZUi5oLDsM_sDvunq4l3owUB-zJfdb84oAgUsSn-q"/>
+<div>
+<div class="text-sm font-bold text-brand-slate">Johnathan Doe</div>
+<div class="text-[11px] text-brand-gray font-medium">john.doe@dossieai.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Engineering</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Jan 12, 2024</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<div class="flex text-amber-400">
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<svg class="w-3.5 h-3.5 text-slate-200 fill-current" viewbox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+</div>
+<span class="text-sm font-bold text-brand-slate">4.2</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                                            active
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<button class="text-brand-gray hover:text-brand-slate transition-colors p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</button>
+</td>
+</tr>
+<!-- Ana Maria Silva -->
+<tr class="hover:bg-slate-50/80 transition-all cursor-pointer group" onclick="window.location.href='perfil_estagiario.html'">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<img alt="Ana" class="h-10 w-10 rounded-full border border-brand-border object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB2KWbZZlJ20v5OGh5p0cvG0eFIGFOJHSrgf3dc9EbU4vf0RROt_aLldfyWBQsX7iVGtquUAV6rKt0zqbF89PrhlryiYLLGEwlyTCk7ws4QkJYzNTC6lV7FIrDFL_FQ9p85zv_CEczyEdTTfr0lQVR4XXbJFjg6PiBMdsmUs_ITl6fUPsYqThOkuAx333_PRa5DS626KIGRs7hOQGvs6RcmvEjlcFIQor2CgZqZaamvzBgfHKgz1ED-VBbj32ANhQMVbfeQ4mi87ct"/>
+<div>
+<div class="text-sm font-bold text-brand-slate">Ana Maria Silva</div>
+<div class="text-[11px] text-brand-gray font-medium">ana.ms@dossieai.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Product</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Feb 05, 2024</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<div class="flex text-amber-400">
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+</div>
+<span class="text-sm font-bold text-brand-slate">5.0</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                                            active
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<button class="text-brand-gray hover:text-brand-slate transition-colors p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</button>
+</td>
+</tr>
+<!-- Robert Brown -->
+<tr class="hover:bg-slate-50/80 transition-all cursor-pointer group" onclick="window.location.href='perfil_estagiario.html'">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3 opacity-60">
+<img alt="Robert" class="h-10 w-10 rounded-full border border-brand-border object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpzcX_iGZt8JeSEoKOcuvecxx_8fDvkT0FD9S1KKj049wSzHnBLqTmYtrrfRrtIkvbn94Swn-GX6aEsrZiK4Wk9OvI3cUkrv9xnH8UJ37pBHXmqsIML_RPlbhnmvE3TDRN_G7EFBP6jvRpoWrI93jmBW7uKyUDG5eQHkli32jVxNLWvyTBuQvFffmgzqem8suqt2aZZgsL-Oc-PbBHnJv3J5oRKk-Gt9KyivJwl2hSBVjmDT5J2CbVusd18v7Dn2kULcGsMt7bBX4k"/>
+<div>
+<div class="text-sm font-bold text-brand-slate">Robert Brown</div>
+<div class="text-[11px] text-brand-gray font-medium">robert.b@dossieai.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Marketing</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Nov 15, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<div class="flex text-amber-400">
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 text-slate-200 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 text-slate-200 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+</div>
+<span class="text-sm font-bold text-brand-slate opacity-60">3.5</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                                            inactive
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<button class="text-brand-gray hover:text-brand-slate transition-colors p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</button>
+</td>
+</tr>
+<!-- Carla Mendes -->
+<tr class="hover:bg-slate-50/80 transition-all cursor-pointer group" onclick="window.location.href='perfil_estagiario.html'">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<img alt="Carla" class="h-10 w-10 rounded-full border border-brand-border object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsQPAXFUv8zK3UnFfBFhUtFNnzZnl5BQWX5p8F8ZHYGeeR7iupA7N_uQG8NpTK09ydb8Wd5Enotzo_JvhSfVQ3nXJVc9Kyex1yt78ILBpOh2pz67K-RMlt6pC-U2zs-gReUPfk3AmeAJPx14bV7spUMpA125SgBuacRWWv91U8xCdig5YgNnV85Zb4hjLGA62qwhmpl_v4oASaghLC1ekenYU8iefi_woWmWVJeIzjzTd4sr2EuBDI7maDEMOXf7gCF_vGsaSYonmu"/>
+<div>
+<div class="text-sm font-bold text-brand-slate">Carla Mendes</div>
+<div class="text-[11px] text-brand-gray font-medium">carla.m@dossieai.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Engineering</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-brand-gray font-medium">Mar 20, 2024</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<div class="flex text-amber-400">
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+<svg class="w-3.5 h-3.5 text-slate-200 fill-current" viewbox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"></path></svg>
+</div>
+<span class="text-sm font-bold text-brand-slate">4.8</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                                            active
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<button class="text-brand-gray hover:text-brand-slate transition-colors p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- PAGINATION -->
+<div class="px-6 py-4 bg-white border-t border-brand-border flex flex-col sm:flex-row items-center justify-between gap-4">
+<span class="text-[11px] font-bold text-brand-gray uppercase tracking-wider">Showing <span class="text-brand-slate">1</span> to <span class="text-brand-slate">4</span> of <span class="text-brand-slate">24</span> trainees</span>
+<div class="inline-flex items-center gap-2">
+<button class="px-3 py-1.5 text-xs font-bold text-white bg-brand-primary rounded-lg shadow-sm shadow-brand-primary/20">1</button>
+<button class="px-3 py-1.5 text-xs font-bold text-brand-gray bg-white border border-brand-border rounded-lg hover:bg-slate-50 transition-colors">2</button>
+</div></div></section></div></div></main></div></body></html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DossiêAI - Analytics &amp; Reports</title>
+<!-- Tailwind CSS v3 CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Inter font from Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            dossie: {
+              bg: '#F1F5F9',
+              surface: '#FFFFFF',
+              primary: '#6366F1',
+              secondary: '#818CF8',
+              textPrimary: '#1E293B',
+              textSecondary: '#64748B',
+              border: '#E2E8F0'
+            }
+          },
+          borderRadius: {
+            'xl-custom': '12px',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body { background-color: #F1F5F9; color: #1E293B; }
+    .sidebar-transition { transition: width 0.3s ease; }
+    .nav-item-active { background-color: #6366F1; color: white; }
+    .nav-item-hover:hover { background-color: #F8FAFC; color: #6366F1; }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex">
+<!-- BEGIN: Collapsible Sidebar -->
+<aside class="w-60 bg-white border-r border-brand-border flex-shrink-0 flex flex-col h-screen sticky top-0 z-50 sidebar-transition" data-purpose="sidebar">
+<!-- Logo Section -->
+<div class="p-6 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-xl font-bold text-slate-900">DossiêAI</span>
+</div>
+<button class="p-1 hover:bg-slate-100 rounded text-slate-400">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<!-- Navigation -->
+<nav class="flex-grow px-4 space-y-8 overflow-y-auto pt-4">
+<!-- General Section -->
+<div>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-2">General</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="dashboard_principal.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Home
+          </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="listagem_estagiarios.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Estagiários
+          </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg nav-item-active shadow-sm shadow-indigo-200" href="analise_ia_exportacao.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Analytics
+          </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="analise_ia_exportacao.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Reports
+          </a>
+</div>
+</div>
+<!-- Personal Space Section -->
+<div>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-2">Personal Space</p>
+<div class="space-y-1">
+<a class="flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="#">
+<span class="flex items-center gap-3">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Team
+            </span>
+<div class="flex -space-x-1">
+<div class="w-4 h-4 rounded-full bg-slate-200 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-indigo-200 border border-white"></div>
+</div>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Dossiês
+          </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Documentos
+          </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Performance
+          </a>
+</div>
+</div>
+<!-- Platform Section -->
+<div>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-2">Platform</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Settings
+          </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 nav-item-hover transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Support
+          </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-red-600 hover:bg-red-50 transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Log out
+          </a>
+</div>
+</div>
+</nav>
+<!-- Bottom CTA Card -->
+<div class="p-4">
+<div class="bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl-custom p-4 text-white shadow-lg shadow-indigo-100">
+<h5 class="text-sm font-bold mb-1">Scale Your Program</h5>
+<p class="text-xs text-indigo-100 mb-3 leading-tight">Unlock advanced AI tracking and deeper reporting features.</p>
+<button class="w-full bg-white text-indigo-600 text-[10px] font-bold py-2 rounded-lg hover:bg-indigo-50 transition-colors uppercase tracking-wider">Upgrade Now</button>
+</div>
+</div>
+</aside>
+<!-- END: Collapsible Sidebar -->
+<!-- Main Content Area -->
+<div class="flex-grow flex flex-col min-h-screen">
+<!-- BEGIN: Top Header Bar -->
+<header class="h-16 bg-white border-b border-brand-border px-8 flex items-center justify-between sticky top-0 z-40" data-purpose="topbar">
+<!-- Left: Calendar -->
+<div class="flex items-center gap-2 text-slate-500">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm font-medium">Segunda-feira, 17 de Março</span>
+</div>
+<!-- Center: Search Bar -->
+<div class="max-w-md w-full px-4">
+<div class="relative group">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 group-focus-within:text-indigo-500 transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="w-full bg-slate-50 border-transparent focus:bg-white focus:border-indigo-200 focus:ring-4 focus:ring-indigo-50 rounded-lg pl-10 pr-4 py-2 text-sm transition-all" placeholder="Buscar estagiários, relatórios..." type="text"/>
+</div>
+</div>
+<!-- Right: User & Notifications -->
+<div class="flex items-center gap-6">
+<button class="relative text-slate-400 hover:text-indigo-600 transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+</button>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold text-slate-900 leading-tight">Sarah Jenkins</p>
+<p class="text-[10px] font-medium text-slate-500 uppercase tracking-tighter">Program Director</p>
+</div>
+<div class="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-sm">SJ</div>
+</div>
+</div>
+</header>
+<!-- END: Top Header Bar -->
+<main class="max-w-5xl mx-auto py-12 px-6 lg:px-10 flex-grow">
+<!-- BEGIN: Page Header -->
+<div class="text-center mb-12">
+<h1 class="text-3xl font-bold text-slate-900 tracking-tight">Análise de Desempenho Inteligente</h1>
+<p class="mt-2 text-slate-500 max-w-2xl mx-auto">Insights gerados por IA baseados na jornada do trainee e feedbacks recebidos.</p>
+</div>
+<!-- END: Page Header -->
+<!-- BEGIN: AI Insights Card -->
+<section class="mb-16">
+<div class="bg-white rounded-xl-custom border border-brand-border shadow-sm overflow-hidden">
+<!-- Card Header -->
+<div class="px-8 py-5 border-b border-brand-border flex items-center justify-between">
+<div class="flex items-center gap-2">
+<svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<h2 class="font-bold text-slate-800">Insights do Claude API</h2>
+</div>
+<span class="text-[10px] font-bold px-2 py-1 bg-green-50 text-green-700 rounded-md border border-green-100 uppercase tracking-widest">Dados Atualizados</span>
+</div>
+<!-- Card Content -->
+<div class="p-8">
+<div class="space-y-6 text-slate-700 leading-relaxed">
+<p class="text-base">Com base nos últimos 3 meses de acompanhamento, o trainee demonstra uma <strong class="text-indigo-600">curva de aprendizado acelerada</strong> em tecnologias de back-end, destacando-se pela autonomia na resolução de bugs críticos.</p>
+<div class="grid md:grid-cols-2 gap-6">
+<!-- Points Fortes -->
+<div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
+<div class="flex items-center gap-2 mb-4">
+<div class="p-1.5 bg-green-100 text-green-600 rounded-md">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+</div>
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pontos Fortes</h4>
+</div>
+<ul class="text-sm space-y-3 font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> Raciocínio lógico estruturado</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> Comunicação interpessoal</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> Adaptabilidade a novas stacks</li>
+</ul>
+</div>
+<!-- Oportunidades -->
+<div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
+<div class="flex items-center gap-2 mb-4">
+<div class="p-1.5 bg-amber-100 text-amber-600 rounded-md">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Oportunidades</h4>
+</div>
+<ul class="text-sm space-y-3 font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Refinar estimativas de entrega</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Aprofundar em testes unitários</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Mentoria de novos estagiários</li>
+</ul>
+</div>
+</div>
+<!-- AI Quote -->
+<div class="border-l-4 border-indigo-500 bg-indigo-50/50 p-4 italic rounded-r-lg">
+<p class="text-slate-600 text-sm">"A trajetória atual sugere prontidão para assumir responsabilidades de nível pleno no próximo ciclo de avaliações, caso mantenha a consistência técnica demonstrada."</p>
+</div>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="px-8 py-6 bg-slate-50/50 border-t border-brand-border flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="text-xs text-slate-400 font-medium">
+              Gerada em: <span class="text-slate-500">24 de Maio, 2024 • 14:30</span>
+</div>
+<button class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2" id="btn-generate-ai">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Gerar Nova Análise
+            </button>
+</div>
+</div>
+</section>
+<!-- END: AI Insights Card -->
+<!-- BEGIN: Export Section -->
+<section data-purpose="export-options">
+<div class="flex items-center gap-4 mb-8">
+<h3 class="text-lg font-bold text-slate-800 whitespace-nowrap">Exportar Dossiê</h3>
+<div class="h-px w-full bg-brand-border"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- PDF Card -->
+<button class="group p-6 bg-white border border-brand-border rounded-xl-custom hover:border-indigo-400 hover:bg-indigo-50/10 transition-all text-left shadow-sm">
+<div class="w-10 h-10 bg-red-50 text-red-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h4 class="text-base font-bold text-slate-800 mb-1">Documento PDF</h4>
+<p class="text-xs text-slate-500 leading-relaxed">Relatório formatado para impressão e apresentações oficiais.</p>
+</button>
+<!-- Excel Card -->
+<button class="group p-6 bg-white border border-brand-border rounded-xl-custom hover:border-emerald-400 hover:bg-emerald-50/10 transition-all text-left shadow-sm">
+<div class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h4 class="text-base font-bold text-slate-800 mb-1">Planilha Excel</h4>
+<p class="text-xs text-slate-500 leading-relaxed">Dados brutos e métricas tabuladas para análise quantitativa.</p>
+</button>
+<!-- JSON Card -->
+<button class="group p-6 bg-white border border-brand-border rounded-xl-custom hover:border-amber-400 hover:bg-amber-50/10 transition-all text-left shadow-sm">
+<div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h4 class="text-base font-bold text-slate-800 mb-1">Raw JSON</h4>
+<p class="text-xs text-slate-500 leading-relaxed">Exportação técnica para integração com outros sistemas de RH.</p>
+</button>
+</div>
+</section>
+<!-- END: Export Section -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="mt-auto py-8 border-t border-brand-border bg-white" data-purpose="footer">
+<div class="max-w-7xl mx-auto px-4 text-center">
+<p class="text-xs text-slate-400 font-medium">© 2026 DossiêAI Platform. Powered by Claude API &amp; Next-Gen Analytics.</p>
+</div>
+</footer>
+<!-- END: Footer -->
+</div>
+<!-- BEGIN: Scripts -->
+<script>
+    // Simple UI interaction feedback for Demo
+    document.getElementById('btn-generate-ai').addEventListener('click', function() {
+      const btn = this;
+      const originalHtml = btn.innerHTML;
+      
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Processando...
+      `;
+      
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        alert('Uma nova análise está sendo processada e será atualizada em breve.');
+      }, 1500);
+    });
+  </script>
+<!-- END: Scripts -->
+</body></html>
