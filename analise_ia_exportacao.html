@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -40,16 +41,16 @@
     .nav-item-hover:hover { background-color: #F8FAFC; color: #6366F1; }
   </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex">
+<body class="bg-brand-bg dark:bg-slate-950 text-brand-slate dark:text-slate-200 font-sans antialiased min-h-screen flex transition-colors duration-300">
 <!-- BEGIN: Collapsible Sidebar -->
-<aside class="w-60 bg-white border-r border-brand-border flex-shrink-0 flex flex-col h-screen sticky top-0 z-50 sidebar-transition" data-purpose="sidebar">
+<aside id="sidebar" class="w-60 bg-white dark:bg-slate-800 border-r border-brand-border dark:border-slate-700 flex-shrink-0 flex flex-col h-screen sticky top-0 z-50 sidebar-transition" data-purpose="sidebar">
 <!-- Logo Section -->
 <div class="p-6 flex items-center justify-between">
 <div class="flex items-center gap-2">
 <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
-<span class="text-xl font-bold text-slate-900">DossiêAI</span>
+<span class="text-xl font-bold text-slate-900 dark:text-slate-100">DossiêAI</span>
 </div>
 <button class="p-1 hover:bg-slate-100 rounded text-slate-400">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
@@ -131,7 +132,7 @@
 <div class="bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl-custom p-4 text-white shadow-lg shadow-indigo-100">
 <h5 class="text-sm font-bold mb-1">Scale Your Program</h5>
 <p class="text-xs text-indigo-100 mb-3 leading-tight">Unlock advanced AI tracking and deeper reporting features.</p>
-<button class="w-full bg-white text-indigo-600 text-[10px] font-bold py-2 rounded-lg hover:bg-indigo-50 transition-colors uppercase tracking-wider">Upgrade Now</button>
+<button class="w-full bg-white dark:bg-slate-900 text-indigo-600 text-[10px] font-bold py-2 rounded-lg hover:bg-indigo-50 transition-colors uppercase tracking-wider">Upgrade Now</button>
 </div>
 </div>
 </aside>
@@ -139,9 +140,9 @@
 <!-- Main Content Area -->
 <div class="flex-grow flex flex-col min-h-screen">
 <!-- BEGIN: Top Header Bar -->
-<header class="h-16 bg-white border-b border-brand-border px-8 flex items-center justify-between sticky top-0 z-40" data-purpose="topbar">
+<header class="h-16 bg-white dark:bg-slate-800 border-b border-brand-border dark:border-slate-700 px-8 flex items-center justify-between sticky top-0 z-40" data-purpose="topbar">
 <!-- Left: Calendar -->
-<div class="flex items-center gap-2 text-slate-500">
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 <span class="text-sm font-medium">Segunda-feira, 17 de Março</span>
 </div>
@@ -151,18 +152,24 @@
 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 group-focus-within:text-indigo-500 transition-colors">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </span>
-<input class="w-full bg-slate-50 border-transparent focus:bg-white focus:border-indigo-200 focus:ring-4 focus:ring-indigo-50 rounded-lg pl-10 pr-4 py-2 text-sm transition-all" placeholder="Buscar estagiários, relatórios..." type="text"/>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-200 focus:ring-4 focus:ring-indigo-50 dark:focus:ring-indigo-900 rounded-lg pl-10 pr-4 py-2 text-sm transition-all" placeholder="Buscar estagiários, relatórios..." type="text"/>
 </div>
 </div>
 <!-- Right: User & Notifications -->
 <div class="flex items-center gap-6">
-<button class="relative text-slate-400 hover:text-indigo-600 transition-colors">
+<button id="theme-toggle" class="relative text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" title="Toggle Dark Mode">
+    <!-- Sun icon for dark mode -->
+    <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+    <!-- Moon icon for light mode -->
+    <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+</button>
+<button class="relative text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
 </button>
 <div class="flex items-center gap-3">
 <div class="text-right hidden sm:block">
-<p class="text-sm font-bold text-slate-900 leading-tight">Sarah Jenkins</p>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight">Sarah Jenkins</p>
 <p class="text-[10px] font-medium text-slate-500 uppercase tracking-tighter">Program Director</p>
 </div>
 <div class="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-sm">SJ</div>
@@ -173,18 +180,18 @@
 <main class="max-w-5xl mx-auto py-12 px-6 lg:px-10 flex-grow">
 <!-- BEGIN: Page Header -->
 <div class="text-center mb-12">
-<h1 class="text-3xl font-bold text-slate-900 tracking-tight">Análise de Desempenho Inteligente</h1>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Análise de Desempenho Inteligente</h1>
 <p class="mt-2 text-slate-500 max-w-2xl mx-auto">Insights gerados por IA baseados na jornada do trainee e feedbacks recebidos.</p>
 </div>
 <!-- END: Page Header -->
 <!-- BEGIN: AI Insights Card -->
 <section class="mb-16">
-<div class="bg-white rounded-xl-custom border border-brand-border shadow-sm overflow-hidden">
+<div class="bg-white dark:bg-slate-900 rounded-xl-custom border border-brand-border dark:border-slate-800 shadow-sm overflow-hidden">
 <!-- Card Header -->
-<div class="px-8 py-5 border-b border-brand-border flex items-center justify-between">
+<div class="px-8 py-5 border-b border-brand-border dark:border-slate-800 flex items-center justify-between">
 <div class="flex items-center gap-2">
 <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-<h2 class="font-bold text-slate-800">Insights do Claude API</h2>
+<h2 class="font-bold text-slate-800 dark:text-slate-200">Insights do Claude API</h2>
 </div>
 <span class="text-[10px] font-bold px-2 py-1 bg-green-50 text-green-700 rounded-md border border-green-100 uppercase tracking-widest">Dados Atualizados</span>
 </div>
@@ -194,7 +201,7 @@
 <p class="text-base">Com base nos últimos 3 meses de acompanhamento, o trainee demonstra uma <strong class="text-indigo-600">curva de aprendizado acelerada</strong> em tecnologias de back-end, destacando-se pela autonomia na resolução de bugs críticos.</p>
 <div class="grid md:grid-cols-2 gap-6">
 <!-- Points Fortes -->
-<div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
+<div class="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100">
 <div class="flex items-center gap-2 mb-4">
 <div class="p-1.5 bg-green-100 text-green-600 rounded-md">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
@@ -208,7 +215,7 @@
 </ul>
 </div>
 <!-- Oportunidades -->
-<div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
+<div class="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100">
 <div class="flex items-center gap-2 mb-4">
 <div class="p-1.5 bg-amber-100 text-amber-600 rounded-md">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
@@ -229,7 +236,7 @@
 </div>
 </div>
 <!-- Card Footer -->
-<div class="px-8 py-6 bg-slate-50/50 border-t border-brand-border flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="px-8 py-6 bg-slate-50 dark:bg-slate-800/50/50 border-t border-brand-border dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
 <div class="text-xs text-slate-400 font-medium">
               Gerada em: <span class="text-slate-500">24 de Maio, 2024 • 14:30</span>
 </div>
@@ -244,32 +251,32 @@
 <!-- BEGIN: Export Section -->
 <section data-purpose="export-options">
 <div class="flex items-center gap-4 mb-8">
-<h3 class="text-lg font-bold text-slate-800 whitespace-nowrap">Exportar Dossiê</h3>
+<h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">Exportar Dossiê</h3>
 <div class="h-px w-full bg-brand-border"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- PDF Card -->
-<button class="group p-6 bg-white border border-brand-border rounded-xl-custom hover:border-indigo-400 hover:bg-indigo-50/10 transition-all text-left shadow-sm">
+<button class="group p-6 bg-white dark:bg-slate-900 border border-brand-border dark:border-slate-800 rounded-xl-custom hover:border-indigo-400 hover:bg-indigo-50/10 transition-all text-left shadow-sm">
 <div class="w-10 h-10 bg-red-50 text-red-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
-<h4 class="text-base font-bold text-slate-800 mb-1">Documento PDF</h4>
+<h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-1">Documento PDF</h4>
 <p class="text-xs text-slate-500 leading-relaxed">Relatório formatado para impressão e apresentações oficiais.</p>
 </button>
 <!-- Excel Card -->
-<button class="group p-6 bg-white border border-brand-border rounded-xl-custom hover:border-emerald-400 hover:bg-emerald-50/10 transition-all text-left shadow-sm">
+<button class="group p-6 bg-white dark:bg-slate-900 border border-brand-border dark:border-slate-800 rounded-xl-custom hover:border-emerald-400 hover:bg-emerald-50/10 transition-all text-left shadow-sm">
 <div class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
-<h4 class="text-base font-bold text-slate-800 mb-1">Planilha Excel</h4>
+<h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-1">Planilha Excel</h4>
 <p class="text-xs text-slate-500 leading-relaxed">Dados brutos e métricas tabuladas para análise quantitativa.</p>
 </button>
 <!-- JSON Card -->
-<button class="group p-6 bg-white border border-brand-border rounded-xl-custom hover:border-amber-400 hover:bg-amber-50/10 transition-all text-left shadow-sm">
+<button class="group p-6 bg-white dark:bg-slate-900 border border-brand-border dark:border-slate-800 rounded-xl-custom hover:border-amber-400 hover:bg-amber-50/10 transition-all text-left shadow-sm">
 <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
-<h4 class="text-base font-bold text-slate-800 mb-1">Raw JSON</h4>
+<h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-1">Raw JSON</h4>
 <p class="text-xs text-slate-500 leading-relaxed">Exportação técnica para integração com outros sistemas de RH.</p>
 </button>
 </div>
@@ -277,7 +284,7 @@
 <!-- END: Export Section -->
 </main>
 <!-- BEGIN: Footer -->
-<footer class="mt-auto py-8 border-t border-brand-border bg-white" data-purpose="footer">
+<footer class="mt-auto py-8 border-t border-brand-border dark:border-slate-800 bg-white dark:bg-slate-900" data-purpose="footer">
 <div class="max-w-7xl mx-auto px-4 text-center">
 <p class="text-xs text-slate-400 font-medium">© 2026 DossiêAI Platform. Powered by Claude API &amp; Next-Gen Analytics.</p>
 </div>
@@ -307,5 +314,47 @@
       }, 1500);
     });
   </script>
+<script>
+    // Theme toggle logic
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+    // Change the icons inside the button based on previous settings
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        themeToggleLightIcon.classList.remove('hidden');
+        document.documentElement.classList.add('dark');
+    } else {
+        themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    themeToggleBtn.addEventListener('click', function() {
+        // toggle icons
+        themeToggleDarkIcon.classList.toggle('hidden');
+        themeToggleLightIcon.classList.toggle('hidden');
+
+        // if set via local storage previously
+        if (localStorage.getItem('color-theme')) {
+            if (localStorage.getItem('color-theme') === 'light') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            }
+
+        // if NOT set via local storage previously
+        } else {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+    });
+</script>
 <!-- END: Scripts -->
 </body></html>
