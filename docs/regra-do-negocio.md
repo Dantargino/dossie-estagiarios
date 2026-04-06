@@ -499,7 +499,7 @@ O sistema suporta **dois temas** alternados via toggle no header:
 | `--surface`  | `#FFFFFF` | Header, sidebar            |
 |   `--card`   | `#FFFFFF` | Cards de conteudo          |
 |  `--border`  | `#E2E8F0` | Bordas                     |
-|  `--accent`  | `#6366F1` | Acoes primarias (indigo)   |
+|  `--accent`  | `#14B8A6` | Acoes secundarias (teal)   |
 | `--accent2`  | `#EF4444` | Destaque secundario (red)  |
 | `--accent3`  | `#22C55E` | Sucesso/ativo (verde)      |
 |   `--text`   | `#1E293B` | Texto principal            |

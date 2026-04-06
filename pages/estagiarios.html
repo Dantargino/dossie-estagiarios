@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <script>
+      // Load user theme preference immediately to prevent FOUC (Flash of Unstyled Content)
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DossiêAI - Gestão de Estagiários</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+              mono: ['"Source Code Pro"', "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+
+      /* ── Sidebar core ── */
+      aside#sidebar {
+        transition: width 0.3s ease-in-out;
+        will-change: width;
+        overflow: visible;
+      }
+      aside#sidebar > *:not(#toggleSidebar) {
+        overflow-x: hidden;
+      }
+      .sidebar-expanded {
+        width: 240px;
+      }
+      .sidebar-collapsed {
+        width: 80px;
+      }
+
+      /* ── Text fade: a ÚNICA coisa que muda ── */
+      .hide-on-collapse {
+        transition:
+          opacity 0.15s ease-out,
+          max-width 0.3s ease-in-out;
+        opacity: 1;
+        max-width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .sidebar-collapsed .hide-on-collapse {
+        opacity: 0;
+        max-width: 0;
+        pointer-events: none;
+      }
+
+      /* Logo centering */
+      .sidebar-collapsed .logo-container {
+        justify-content: center;
+      }
+
+      /* ── Active indicator ── */
+      .nav-item {
+        position: relative;
+      }
+      .nav-item.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 20%;
+        height: 60%;
+        width: 3px;
+        background-color: #0d9488;
+        border-radius: 0 3px 3px 0;
+      }
+      .dark .nav-item.active::before {
+        background-color: #22c55e;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #52525b;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body
+    class="flex h-screen overflow-hidden antialiased bg-slate-50 dark:bg-black text-slate-900 dark:text-slate-100 transition-colors duration-200"
+  >
+    <div
+      id="sidebarOverlay"
+      class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"
+    ></div>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="sidebar-expanded flex flex-col border-r border-slate-200 dark:border-[#1F1F22] bg-white dark:bg-[#0A0A0A] transition-all duration-300 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0"
+    >
+      <!-- Toggle Sidebar Button -->
+      <button
+        id="toggleSidebar"
+        class="absolute -right-3.5 top-6 bg-white dark:bg-[#111] border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-full p-1 z-50 transition-all duration-200 hover:scale-110 shadow-sm hidden md:block"
+      >
+        <svg
+          id="chevron-icon"
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M15 19l-7-7 7-7"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Profile/Company Dropdown -->
+      <div class="px-3 pt-4 pb-2 logo-container flex">
+        <button
+          id="titleToggleSidebar"
+          class="w-full flex items-center justify-between p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-[#18181B] transition-colors center-on-collapse"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="shrink-0 w-10 h-10 bg-slate-100 dark:bg-[#111111] border border-slate-200 dark:border-[#1F1F22] rounded-lg flex items-center justify-center text-xl font-bold relative"
+            >
+              D
+              <div
+                class="absolute bottom-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-[#111111]"
+              ></div>
+            </div>
+            <div class="text-left hide-on-collapse">
+              <div
+                class="text-lg font-bold text-slate-900 dark:text-white leading-tight w-32 truncate"
+              >
+                DossiêAI
+              </div>
+              <div
+                class="text-xs text-slate-500 dark:text-[#A1A1AA] leading-tight mt-0.5 w-32 truncate"
+              >
+                admin@dossie.ai
+              </div>
+            </div>
+          </div>
+          <svg
+            class="w-4 h-4 text-slate-400 dark:text-[#A1A1AA] hide-on-collapse shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="flex-1 px-3 space-y-1 overflow-y-auto mt-2 custom-scrollbar">
+        <a
+          href="dashboard.html"
+          class="nav-item flex items-center justify-between px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-[#18181B] hover:text-slate-900 dark:hover:text-white rounded-lg transition-colors center-on-collapse"
+          title="Dashboard"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              ></path>
+            </svg>
+            <span class="text-sm hide-on-collapse">Dashboard</span>
+          </div>
+        </a>
+        <a
+          href="estagiarios.html"
+          class="nav-item active flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-[#18181B] text-slate-900 dark:text-white rounded-lg transition-colors center-on-collapse"
+          title="Estagiários"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              ></path>
+            </svg>
+            <div class="flex items-center gap-2 hide-on-collapse">
+              <span class="text-sm">Estagiários</span>
+            </div>
+          </div>
+          <svg
+            class="w-4 h-4 hide-on-collapse"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </a>
+        <a
+          href="avaliacoes.html"
+          class="nav-item flex items-center justify-between px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-[#18181B] hover:text-slate-900 dark:hover:text-white rounded-lg transition-colors center-on-collapse"
+          title="Avaliações"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              ></path>
+            </svg>
+            <div class="flex items-center gap-2 hide-on-collapse">
+              <span class="text-sm">Avaliações</span>
+            </div>
+          </div>
+        </a>
+
+        <div class="h-2"></div>
+
+        <a
+          href="relatorios.html"
+          class="nav-item flex items-center justify-between px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-[#18181B] hover:text-slate-900 dark:hover:text-white rounded-lg transition-colors center-on-collapse"
+          title="Relatórios"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              ></path>
+            </svg>
+            <span class="text-sm hide-on-collapse">Relatórios</span>
+          </div>
+        </a>
+      </nav>
+
+      <!-- Bottom Actions -->
+      <div class="p-4 space-y-4">
+        <div
+          class="bg-slate-50 dark:bg-[#09090B] border border-slate-200 dark:border-[#1F1F22] p-3.5 rounded-xl relative hide-on-collapse"
+        >
+          <button
+            class="absolute top-2.5 right-2.5 text-slate-400 dark:text-[#A1A1AA] hover:text-slate-800 dark:hover:text-white"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          <div
+            class="inline-block bg-blue-100 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-blue-400 text-[10px] font-bold px-1.5 py-0.5 rounded-sm mb-2"
+          >
+            Treinamento
+          </div>
+          <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-1">
+            Programa de Excelência
+          </h4>
+          <p
+            class="text-xs text-slate-500 dark:text-[#A1A1AA] mb-3 leading-relaxed"
+          >
+            Avalie o desempenho dos novos estagiários.
+          </p>
+          <button
+            class="text-xs bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-blue-50 border border-transparent shadow-sm px-3 py-1.5 rounded-lg font-medium inline-flex items-center gap-1 transition-colors"
+          >
+            Ver detalhes
+            <svg
+              class="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M4 12h16m0 0l-4-4m4 4l-4 4"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-1">
+          <!-- Theme Toggle -->
+          <button
+            id="themeToggle"
+            class="action-item relative flex items-center gap-3 px-3 py-2 w-full text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18181B] rounded-lg transition-colors sidebar-theme-toggle"
+            title="Alternar Tema"
+            aria-label="Alternar Tema"
+            role="switch"
+            aria-checked="false"
+          >
+            <!-- Moon Icon (shows in light mode) -->
+            <svg
+              id="theme-icon-moon"
+              class="w-5 h-5 shrink-0 block dark:hidden"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              ></path>
+            </svg>
+            <!-- Sun Icon (shows in dark mode) -->
+            <svg
+              id="theme-icon-sun"
+              class="w-5 h-5 shrink-0 hidden dark:block"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              ></path>
+            </svg>
+            <span class="text-sm font-medium hide-on-collapse block dark:hidden"
+              >Dark Mode</span
+            >
+            <span class="text-sm font-medium hide-on-collapse hidden dark:block"
+              >Light Mode</span
+            >
+          </button>
+
+          <!-- Configurações -->
+          <a
+            href="#"
+            class="action-item relative flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18181B] rounded-lg transition-colors center-on-collapse"
+            title="Configurações"
+          >
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+            <span class="text-sm hide-on-collapse"
+              >Configurações</span
+            >
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main
+      class="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-black transition-colors duration-200"
+    >
+      <!-- Header -->
+      <header
+        class="h-[72px] flex items-center justify-between px-4 md:px-8 border-b border-slate-200 dark:border-[#1F1F22] bg-slate-50/50 dark:bg-black/50 backdrop-blur-sm shadow-sm z-10 w-full shrink-0"
+      >
+        <div class="flex items-center gap-3">
+          <button
+            id="mobileMenuBtn"
+            class="p-2 md:hidden bg-white dark:bg-[#1A1A1D] hover:bg-slate-100 dark:hover:bg-[#27272A] border border-slate-200 dark:border-[#1F1F22] rounded-lg transition-colors text-slate-600 dark:text-[#A1A1AA] flex-shrink-0"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+          <h1
+            class="text-base font-bold text-slate-900 dark:text-white tracking-wide hidden sm:block"
+          >
+            Gestão de Estagiários
+          </h1>
+          <span
+            class="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 text-xs px-2 py-1 rounded border border-slate-200 dark:border-slate-700 hidden sm:inline-block"
+            >Listagem</span
+          >
+        </div>
+
+        <div class="flex items-center gap-2 md:gap-4">
+          <button
+            class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-slate-50 border border-transparent shadow-sm px-3 md:px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2 transition-colors shrink-0"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
+            </svg>
+            <span class="hidden md:inline">Adicionar Estagiário</span>
+            <span class="md:hidden">Adicionar</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+        <div class="max-w-6xl w-full mx-auto space-y-6">
+          <!-- PAGE HEADER INFO -->
+          <section
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2"
+          >
+            <div>
+              <h2
+                class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white"
+              >
+                Estagiários
+              </h2>
+              <p class="text-slate-500 dark:text-[#A1A1AA] text-sm mt-1">
+                Gerencie, acompanhe e filtre a lista completa de estagiários no
+                sistema.
+              </p>
+            </div>
+          </section>
+
+          <!-- FILTERS -->
+          <section
+            class="bg-white dark:bg-[#0A0A0A] p-4 rounded-2xl border border-slate-200 dark:border-[#1F1F22] shadow-sm flex flex-col md:flex-row gap-4 items-center"
+          >
+            <div class="relative flex-1 w-full">
+              <span
+                class="absolute inset-y-0 left-3 flex items-center text-slate-400 dark:text-[#A1A1AA]"
+              >
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  ></path>
+                </svg>
+              </span>
+              <input
+                class="block w-full pl-10 pr-3 py-2.5 border border-slate-200 dark:border-[#1F1F22] rounded-xl bg-slate-50 dark:bg-[#111111] text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-mono placeholder:font-sans"
+                placeholder="Buscar por nome ou ID..."
+                type="text"
+              />
+            </div>
+            <div class="flex flex-wrap gap-3 w-full md:w-auto">
+              <select
+                class="block w-full md:w-40 pl-3 pr-8 py-2.5 border border-slate-200 dark:border-[#1F1F22] rounded-xl text-sm bg-slate-50 dark:bg-[#111111] focus:ring-blue-500/20 focus:border-blue-500"
+              >
+                <option>Departamento</option>
+                <option>Engenharia</option>
+                <option>Produto</option>
+                <option>Marketing</option>
+                <option>RH</option>
+              </select>
+              <select
+                class="block w-full md:w-40 pl-3 pr-8 py-2.5 border border-slate-200 dark:border-[#1F1F22] rounded-xl text-sm bg-slate-50 dark:bg-[#111111] focus:ring-blue-500/20 focus:border-blue-500"
+              >
+                <option>Avaliação</option>
+                <option>4+ Estrelas</option>
+                <option>3+ Estrelas</option>
+              </select>
+              <button
+                class="flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold transition-all whitespace-nowrap w-full md:w-auto shadow-sm"
+              >
+                <svg
+                  class="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  ></path>
+                </svg>
+                Filtros
+              </button>
+            </div>
+          </section>
+
+          <!-- TABLE CARD -->
+          <section
+            class="bg-white dark:bg-[#0A0A0A] rounded-2xl border border-slate-200 dark:border-[#1F1F22] shadow-sm overflow-hidden"
+          >
+            <div class="overflow-x-auto custom-scrollbar">
+              <table class="w-full text-left border-collapse min-w-[800px]">
+                <thead>
+                  <tr
+                    class="bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-[#1F1F22]"
+                  >
+                    <th
+                      class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#A1A1AA]"
+                    >
+                      Estagiário
+                    </th>
+                    <th
+                      class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#A1A1AA]"
+                    >
+                      Departamento
+                    </th>
+                    <th
+                      class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#A1A1AA]"
+                    >
+                      Data Início
+                    </th>
+                    <th
+                      class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#A1A1AA]"
+                    >
+                      Média
+                    </th>
+                    <th
+                      class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#A1A1AA]"
+                    >
+                      Status
+                    </th>
+                    <th class="px-6 py-4 text-right"></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-[#1F1F22]">
+                  <!-- User 1 -->
+                  <tr
+                    class="hover:bg-slate-50 dark:hover:bg-[#111] transition-all cursor-pointer group"
+                    onclick="window.location.href = 'avaliacoes.html'"
+                  >
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="w-10 h-10 rounded-full border border-slate-200 dark:border-[#1F1F22] bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-sm shrink-0"
+                        >
+                          JD
+                        </div>
+                        <div>
+                          <div
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            Johnathan Doe
+                          </div>
+                          <div
+                            class="text-xs text-slate-500 dark:text-[#A1A1AA] font-mono mt-0.5"
+                          >
+                            john.doe@dossie.ai
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 font-medium"
+                    >
+                      Engenharia
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 font-mono"
+                    >
+                      12/Jan/2024
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="text-sm font-bold text-slate-900 dark:text-white"
+                          >4.2</span
+                        >
+                        <svg
+                          class="w-4 h-4 text-amber-500 max-sm:hidden"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-500 border border-green-200 dark:border-green-500/20 uppercase tracking-widest"
+                      >
+                        Ativo
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-1"
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M9 5l7 7-7 7"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- User 2 -->
+                  <tr
+                    class="hover:bg-slate-50 dark:hover:bg-[#111] transition-all cursor-pointer group"
+                    onclick="window.location.href = 'avaliacoes.html'"
+                  >
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="w-10 h-10 rounded-full border border-slate-200 dark:border-[#1F1F22] bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-sm shrink-0"
+                        >
+                          AS
+                        </div>
+                        <div>
+                          <div
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            Ana Maria Silva
+                          </div>
+                          <div
+                            class="text-xs text-slate-500 dark:text-[#A1A1AA] font-mono mt-0.5"
+                          >
+                            ana.ms@dossie.ai
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 font-medium"
+                    >
+                      Produto
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 font-mono"
+                    >
+                      05/Fev/2024
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="text-sm font-bold text-slate-900 dark:text-white"
+                          >5.0</span
+                        >
+                        <svg
+                          class="w-4 h-4 text-amber-500 max-sm:hidden"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-500 border border-green-200 dark:border-green-500/20 uppercase tracking-widest"
+                      >
+                        Ativo
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-1"
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M9 5l7 7-7 7"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- User 3 (Inactive) -->
+                  <tr
+                    class="hover:bg-slate-50 dark:hover:bg-[#111] transition-all cursor-pointer group"
+                    onclick="window.location.href = 'avaliacoes.html'"
+                  >
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3 opacity-60">
+                        <div
+                          class="w-10 h-10 rounded-full border border-slate-200 dark:border-[#1F1F22] bg-slate-200 dark:bg-slate-800 text-slate-500 flex items-center justify-center font-bold text-sm shrink-0"
+                        >
+                          RB
+                        </div>
+                        <div>
+                          <div
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            Robert Brown
+                          </div>
+                          <div
+                            class="text-xs text-slate-500 dark:text-[#A1A1AA] font-mono mt-0.5"
+                          >
+                            robert.b@dossie.ai
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-400 font-medium"
+                    >
+                      Marketing
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-400 font-mono"
+                    >
+                      15/Nov/2023
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-2 opacity-60">
+                        <span
+                          class="text-sm font-bold text-slate-900 dark:text-white"
+                          >3.5</span
+                        >
+                        <svg
+                          class="w-4 h-4 text-amber-500 max-sm:hidden"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 uppercase tracking-widest"
+                      >
+                        Inativo
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-1"
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M9 5l7 7-7 7"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- User 4 -->
+                  <tr
+                    class="hover:bg-slate-50 dark:hover:bg-[#111] transition-all cursor-pointer group"
+                    onclick="window.location.href = 'avaliacoes.html'"
+                  >
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="w-10 h-10 rounded-full border border-slate-200 dark:border-[#1F1F22] bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm shrink-0"
+                        >
+                          CM
+                        </div>
+                        <div>
+                          <div
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            Carla Mendes
+                          </div>
+                          <div
+                            class="text-xs text-slate-500 dark:text-[#A1A1AA] font-mono mt-0.5"
+                          >
+                            carla.m@dossie.ai
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 font-medium"
+                    >
+                      Engenharia
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 font-mono"
+                    >
+                      20/Mar/2024
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="text-sm font-bold text-slate-900 dark:text-white"
+                          >4.8</span
+                        >
+                        <svg
+                          class="w-4 h-4 text-amber-500 max-sm:hidden"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-500 border border-green-200 dark:border-green-500/20 uppercase tracking-widest"
+                      >
+                        Ativo
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-1"
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M9 5l7 7-7 7"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div
+              class="px-6 py-4 bg-slate-50 dark:bg-[#111111] border-t border-slate-200 dark:border-[#1F1F22] flex flex-col sm:flex-row items-center justify-between gap-4"
+            >
+              <span
+                class="text-xs font-medium text-slate-500 dark:text-[#A1A1AA]"
+              >
+                Mostrando
+                <span class="text-slate-900 dark:text-white font-bold">1</span>
+                a
+                <span class="text-slate-900 dark:text-white font-bold">4</span>
+                de
+                <span class="text-slate-900 dark:text-white font-bold">24</span>
+              </span>
+              <div class="inline-flex items-center gap-1">
+                <button
+                  class="w-8 h-8 flex items-center justify-center text-xs font-bold text-blue-800 bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50 rounded-md shadow-sm"
+                >
+                  1
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center text-xs font-semibold text-slate-600 dark:text-[#A1A1AA] hover:bg-slate-200 dark:hover:bg-[#1F1F22] rounded-md transition-colors"
+                >
+                  2
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center text-xs font-semibold text-slate-600 dark:text-[#A1A1AA] hover:bg-slate-200 dark:hover:bg-[#1F1F22] rounded-md transition-colors"
+                >
+                  3
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center text-xs font-semibold text-slate-600 dark:text-[#A1A1AA] hover:bg-slate-200 dark:hover:bg-[#1F1F22] rounded-md transition-colors"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9 5l7 7-7 7"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Theme toggle functionality
+      const themeToggleBtn = document.getElementById("themeToggle");
+
+      const updateThemeUI = () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        if (themeToggleBtn) {
+          themeToggleBtn.setAttribute(
+            "aria-checked",
+            isDark ? "true" : "false",
+          );
+        }
+      };
+
+      // Initialize UI
+      updateThemeUI();
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const isDark = document.documentElement.classList.contains("dark");
+          localStorage.theme = isDark ? "dark" : "light";
+          updateThemeUI();
+        });
+      }
+
+      // Sidebar collapse functionality
+      const sidebar = document.getElementById("sidebar");
+      const toggleSidebarBtn = document.getElementById("toggleSidebar");
+      const titleToggleBtn = document.getElementById("titleToggleSidebar");
+      const chevronIcon = document.getElementById("chevron-icon");
+
+      const handleSidebarToggle = () => {
+        if (window.innerWidth < 768) {
+          // Mobile behavior: close the sidebar completely
+          sidebar.classList.remove("translate-x-0");
+          sidebar.classList.add("-translate-x-full");
+          sidebarOverlay.classList.add("hidden");
+        } else {
+          // Desktop behavior: expand/collapse
+          if (sidebar.classList.contains("sidebar-expanded")) {
+            sidebar.classList.remove("sidebar-expanded");
+            sidebar.classList.add("sidebar-collapsed");
+            if (chevronIcon)
+              chevronIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path>`; // Point right
+          } else {
+            sidebar.classList.remove("sidebar-collapsed");
+            sidebar.classList.add("sidebar-expanded");
+            if (chevronIcon)
+              chevronIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>`; // Point left
+          }
+        }
+      };
+
+      if (toggleSidebarBtn)
+        toggleSidebarBtn.addEventListener("click", handleSidebarToggle);
+      if (titleToggleBtn)
+        titleToggleBtn.addEventListener("click", handleSidebarToggle);
+
+      // Mobile Menu Logic
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener("click", () => {
+          sidebar.classList.remove("-translate-x-full");
+          sidebar.classList.add("translate-x-0");
+          sidebarOverlay.classList.remove("hidden");
+          // Make sure it expands fully on mobile opening
+          sidebar.classList.add("sidebar-expanded");
+          sidebar.classList.remove("sidebar-collapsed");
+        });
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener("click", () => {
+          sidebar.classList.remove("translate-x-0");
+          sidebar.classList.add("-translate-x-full");
+          sidebarOverlay.classList.add("hidden");
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <script>
+      // Load user theme preference immediately to prevent FOUC (Flash of Unstyled Content)
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DossiêAI - Perfil do Estagiário</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+              mono: ['"Source Code Pro"', "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+
+      /* ── Sidebar core ── */
+      aside#sidebar {
+        transition: width 0.3s ease-in-out;
+        will-change: width;
+        overflow: visible;
+      }
+      aside#sidebar > *:not(#toggleSidebar) {
+        overflow-x: hidden;
+      }
+      .sidebar-expanded {
+        width: 240px;
+      }
+      .sidebar-collapsed {
+        width: 80px;
+      }
+
+      /* ── Text fade: a ÚNICA coisa que muda ── */
+      .hide-on-collapse {
+        transition:
+          opacity 0.15s ease-out,
+          max-width 0.3s ease-in-out;
+        opacity: 1;
+        max-width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .sidebar-collapsed .hide-on-collapse {
+        opacity: 0;
+        max-width: 0;
+        pointer-events: none;
+      }
+
+      /* Logo centering */
+      .sidebar-collapsed .logo-container {
+        justify-content: center;
+      }
+
+      /* ── Active indicator ── */
+      .nav-item {
+        position: relative;
+      }
+      .nav-item.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 20%;
+        height: 60%;
+        width: 3px;
+        background-color: #0d9488;
+        border-radius: 0 3px 3px 0;
+      }
+      .dark .nav-item.active::before {
+        background-color: #22c55e;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #52525b;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body
+    class="flex h-screen overflow-hidden antialiased bg-slate-50 dark:bg-black text-slate-900 dark:text-slate-100 transition-colors duration-200"
+  >
+    <div
+      id="sidebarOverlay"
+      class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"
+    ></div>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="sidebar-expanded flex flex-col border-r border-slate-200 dark:border-[#1F1F22] bg-white dark:bg-[#0A0A0A] transition-all duration-300 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0"
+    >
+      <!-- Toggle Sidebar Button -->
+      <button
+        id="toggleSidebar"
+        class="absolute -right-3.5 top-6 bg-white dark:bg-[#111] border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-full p-1 z-50 transition-all duration-200 hover:scale-110 shadow-sm hidden md:block"
+      >
+        <svg
+          id="chevron-icon"
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M15 19l-7-7 7-7"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Profile/Company Dropdown -->
+      <div class="px-3 pt-4 pb-2 logo-container flex">
+        <button
+          id="titleToggleSidebar"
+          class="w-full flex items-center justify-between p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-[#18181B] transition-colors center-on-collapse"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="shrink-0 w-10 h-10 bg-slate-100 dark:bg-[#111111] border border-slate-200 dark:border-[#1F1F22] rounded-lg flex items-center justify-center text-xl font-bold relative"
+            >
+              D
+              <div
+                class="absolute bottom-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-[#111111]"
+              ></div>
+            </div>
+            <div class="text-left hide-on-collapse">
+              <div
+                class="text-lg font-bold text-slate-900 dark:text-white leading-tight w-32 truncate"
+              >
+                DossiêAI
+              </div>
+              <div
+                class="text-xs text-slate-500 dark:text-[#A1A1AA] leading-tight mt-0.5 w-32 truncate"
+              >
+                admin@dossie.ai
+              </div>
+            </div>
+          </div>
+          <svg
+            class="w-4 h-4 text-slate-400 dark:text-[#A1A1AA] hide-on-collapse shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="flex-1 px-3 space-y-1 overflow-y-auto mt-2 custom-scrollbar">
+        <a
+          href="dashboard.html"
+          class="nav-item flex items-center justify-between px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-[#18181B] hover:text-slate-900 dark:hover:text-white rounded-lg transition-colors center-on-collapse"
+          title="Dashboard"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              ></path>
+            </svg>
+            <span class="text-sm hide-on-collapse">Dashboard</span>
+          </div>
+        </a>
+        <a
+          href="estagiarios.html"
+          class="nav-item flex items-center justify-between px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-[#18181B] hover:text-slate-900 dark:hover:text-white rounded-lg transition-colors center-on-collapse"
+          title="Estagiários"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              ></path>
+            </svg>
+            <div class="flex items-center gap-2 hide-on-collapse">
+              <span class="text-sm">Estagiários</span>
+            </div>
+          </div>
+          <svg
+            class="w-4 h-4 hide-on-collapse"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </a>
+        <a
+          href="avaliacoes.html"
+          class="nav-item active flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-[#18181B] text-slate-900 dark:text-white rounded-lg transition-colors center-on-collapse"
+          title="Avaliações"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              ></path>
+            </svg>
+            <div class="flex items-center gap-2 hide-on-collapse">
+              <span class="text-sm">Avaliações</span>
+            </div>
+          </div>
+        </a>
+
+        <div class="h-2"></div>
+
+        <a
+          href="relatorios.html"
+          class="nav-item flex items-center justify-between px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-[#18181B] hover:text-slate-900 dark:hover:text-white rounded-lg transition-colors center-on-collapse"
+          title="Relatórios"
+        >
+          <div class="flex items-center gap-3">
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              ></path>
+            </svg>
+            <span class="text-sm hide-on-collapse">Relatórios</span>
+          </div>
+        </a>
+      </nav>
+
+      <!-- Bottom Actions -->
+      <div class="p-4 space-y-4">
+        <div
+          class="bg-slate-50 dark:bg-[#09090B] border border-slate-200 dark:border-[#1F1F22] p-3.5 rounded-xl relative hide-on-collapse"
+        >
+          <button
+            class="absolute top-2.5 right-2.5 text-slate-400 dark:text-[#A1A1AA] hover:text-slate-800 dark:hover:text-white"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          <div
+            class="inline-block bg-blue-100 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-blue-400 text-[10px] font-bold px-1.5 py-0.5 rounded-sm mb-2"
+          >
+            Treinamento
+          </div>
+          <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-1">
+            Programa de Excelência
+          </h4>
+          <p
+            class="text-xs text-slate-500 dark:text-[#A1A1AA] mb-3 leading-relaxed"
+          >
+            Avalie o desempenho dos novos estagiários.
+          </p>
+          <button
+            class="text-xs bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg font-medium inline-flex items-center gap-1 transition-colors"
+          >
+            Ver detalhes
+            <svg
+              class="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M4 12h16m0 0l-4-4m4 4l-4 4"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-1">
+          <!-- Theme Toggle -->
+          <button
+            id="themeToggle"
+            class="action-item relative flex items-center gap-3 px-3 py-2 w-full text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18181B] rounded-lg transition-colors sidebar-theme-toggle"
+            title="Alternar Tema"
+            aria-label="Alternar Tema"
+            role="switch"
+            aria-checked="false"
+          >
+            <!-- Moon Icon (shows in light mode) -->
+            <svg
+              id="theme-icon-moon"
+              class="w-5 h-5 shrink-0 block dark:hidden"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              ></path>
+            </svg>
+            <!-- Sun Icon (shows in dark mode) -->
+            <svg
+              id="theme-icon-sun"
+              class="w-5 h-5 shrink-0 hidden dark:block"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              ></path>
+            </svg>
+            <span class="text-sm font-medium hide-on-collapse block dark:hidden"
+              >Dark Mode</span
+            >
+            <span class="text-sm font-medium hide-on-collapse hidden dark:block"
+              >Light Mode</span
+            >
+          </button>
+
+          <!-- Configurações -->
+          <a
+            href="#"
+            class="action-item relative flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18181B] rounded-lg transition-colors center-on-collapse"
+            title="Configurações"
+          >
+            <svg
+              class="w-5 h-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+            <span class="text-sm hide-on-collapse"
+              >Configurações</span
+            >
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main
+      class="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-black transition-colors duration-200"
+    >
+      <!-- Header -->
+      <header
+        class="h-[72px] flex items-center justify-between px-4 md:px-8 border-b border-slate-200 dark:border-[#1F1F22] bg-slate-50/50 dark:bg-black/50 backdrop-blur-sm shadow-sm z-10 w-full shrink-0"
+      >
+        <div class="flex items-center gap-3">
+          <button
+            id="mobileMenuBtn"
+            class="p-2 md:hidden bg-white dark:bg-[#1A1A1D] hover:bg-slate-100 dark:hover:bg-[#27272A] border border-slate-200 dark:border-[#1F1F22] rounded-lg transition-colors text-slate-600 dark:text-[#A1A1AA] flex-shrink-0"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+          <h1
+            class="text-base font-bold text-slate-900 dark:text-white tracking-wide hidden sm:block"
+          >
+            Perfil do Estagiário
+          </h1>
+          <span
+            class="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 text-xs px-2 py-1 rounded border border-slate-200 dark:border-slate-700 hidden sm:inline-block"
+            >Avaliação</span
+          >
+        </div>
+
+        <div class="flex items-center gap-2 md:gap-4">
+          <button
+            class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-slate-50 border border-transparent shadow-sm px-3 md:px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2 transition-colors shrink-0"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
+            </svg>
+            <span class="hidden md:inline">Baixar Relatório</span>
+            <span class="md:hidden">Baixar</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+        <div class="max-w-6xl w-full mx-auto space-y-6">
+          <!-- BEGIN: Profile Header Card -->
+          <section
+            class="bg-white dark:bg-[#0A0A0A] rounded-2xl border border-slate-200 dark:border-[#1F1F22] p-6 lg:p-8 shadow-sm"
+          >
+            <div
+              class="flex flex-col lg:flex-row lg:items-center justify-between gap-6"
+            >
+              <div class="flex gap-4 sm:space-x-6 items-start sm:items-center">
+                <!-- User Avatar with Status -->
+                <div class="relative shrink-0">
+                  <div
+                    class="h-20 w-20 md:h-24 md:w-24 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 dark:border-[#1F1F22]"
+                  >
+                    <img
+                      alt="DossiêAI Avatar"
+                      class="w-full h-full object-cover"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxTT7nUwKTK5H-E-JsLfcLgbu0an9ZNdlXxqAq7dzEJ6rZos09nCaN1ilpP1_fDxQyw9dLWjKYxBmcOEIa7Ik-a-i2qLXNJqfaGCb7AWbDePtsNr1erLFDBGCAHHsTejv7i0tb2XTvm0CsXpMPd9xhNHP4riCkGrz-OIwA3UcWO3F9PoXAH_pAj25zlGiKDQkKv6HEWG69F4jZBFfwlHQARYDRNgcXnWUNnfP62lpwZ8_I-qiq2zlUL8BE5TfUpz8v7H6ezOF5XjQZ"
+                    />
+                  </div>
+                  <span
+                    class="absolute -bottom-1 -right-1 block h-5 w-5 rounded-full bg-green-500 border-4 border-white dark:border-[#0A0A0A]"
+                  ></span>
+                </div>
+
+                <div>
+                  <div class="flex flex-wrap items-center gap-2 mb-1">
+                    <h1
+                      class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white"
+                    >
+                      Johnathan Doe
+                    </h1>
+                    <span
+                      class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-bold rounded-md border border-slate-200 dark:border-slate-700 uppercase tracking-wide"
+                      >Elite Tier</span
+                    >
+                  </div>
+                  <p
+                    class="text-slate-500 dark:text-[#A1A1AA] font-medium text-sm"
+                  >
+                    Artificial Intelligence Trainee • Cohort 2024.1
+                  </p>
+                  <p
+                    class="mt-2 text-slate-600 dark:text-slate-400 text-xs sm:text-sm max-w-2xl leading-relaxed hidden sm:block"
+                  >
+                    Focused on large language model integration and prompt
+                    engineering. Johnathan has shown exceptional aptitude in
+                    bridging the gap between raw data processing and natural
+                    language output. Currently working on internal automation
+                    tools.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex items-center gap-3 w-full lg:w-auto mt-4 lg:mt-0"
+              >
+                <button
+                  class="flex-1 lg:flex-none px-5 py-2.5 text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl transition-all shadow-sm"
+                >
+                  Editar Perfil
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-[#1F1F22]"
+            >
+              <div class="text-center md:text-left">
+                <p
+                  class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"
+                >
+                  Progresso Global
+                </p>
+                <div
+                  class="flex items-baseline justify-center md:justify-start gap-2"
+                >
+                  <span
+                    class="text-2xl font-bold text-slate-900 dark:text-white"
+                    >82%</span
+                  >
+                  <span class="text-xs text-green-500 font-bold">+4%</span>
+                </div>
+              </div>
+              <div class="text-center md:text-left">
+                <p
+                  class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"
+                >
+                  Tempo no Programa
+                </p>
+                <span class="text-2xl font-bold text-slate-900 dark:text-white"
+                  >124
+                  <span class="text-sm font-normal text-slate-500"
+                    >dias</span
+                  ></span
+                >
+              </div>
+              <div class="text-center md:text-left">
+                <p
+                  class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"
+                >
+                  Marcos Atingidos
+                </p>
+                <span class="text-2xl font-bold text-slate-900 dark:text-white"
+                  >12/15</span
+                >
+              </div>
+              <div class="text-center md:text-left">
+                <p
+                  class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"
+                >
+                  Gestor Atual
+                </p>
+                <span
+                  class="text-base sm:text-lg md:text-xl font-bold text-slate-900 dark:text-white truncate"
+                  >Sarah Jenkins</span
+                >
+              </div>
+            </div>
+          </section>
+
+          <!-- Main Grid Layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- BEGIN: Evaluations Column (Left) -->
+            <section class="lg:col-span-4 space-y-6">
+              <div
+                class="bg-white dark:bg-[#0A0A0A] rounded-2xl border border-slate-200 dark:border-[#1F1F22] p-6 shadow-sm h-full"
+              >
+                <div
+                  class="flex items-center gap-2 mb-6 text-slate-900 dark:text-white"
+                >
+                  <svg
+                    class="h-5 w-5 text-slate-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    ></path>
+                  </svg>
+                  <h2 class="text-lg font-bold">Avaliações</h2>
+                </div>
+
+                <div class="space-y-6">
+                  <div>
+                    <div class="flex justify-between items-center mb-1">
+                      <span
+                        class="text-sm font-bold text-slate-700 dark:text-slate-300"
+                        >Competência Técnica</span
+                      >
+                      <div class="flex gap-0.5 text-xs text-amber-500">
+                        ★★★★<span class="text-slate-200 dark:text-slate-700"
+                          >★</span
+                        >
+                      </div>
+                    </div>
+                    <p
+                      class="text-xs text-slate-500 dark:text-[#A1A1AA] leading-relaxed italic"
+                    >
+                      "Excelente domínio de Python &amp; LLMs."
+                    </p>
+                  </div>
+                  <div>
+                    <div class="flex justify-between items-center mb-1">
+                      <span
+                        class="text-sm font-bold text-slate-700 dark:text-slate-300"
+                        >Soft Skills</span
+                      >
+                      <div class="flex gap-0.5 text-xs text-amber-500">
+                        ★★★<span class="text-slate-200 dark:text-slate-700"
+                          >★★</span
+                        >
+                      </div>
+                    </div>
+                    <p
+                      class="text-xs text-slate-500 dark:text-[#A1A1AA] leading-relaxed italic"
+                    >
+                      "Melhorando comunicação com cliente."
+                    </p>
+                  </div>
+                  <div>
+                    <div class="flex justify-between items-center mb-1">
+                      <span
+                        class="text-sm font-bold text-slate-700 dark:text-slate-300"
+                        >Proatividade</span
+                      >
+                      <div class="flex gap-0.5 text-xs text-amber-500">
+                        ★★★★★
+                      </div>
+                    </div>
+                    <p
+                      class="text-xs text-slate-500 dark:text-[#A1A1AA] leading-relaxed italic"
+                    >
+                      "Sempre busca novos desafios no projeto."
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="mt-10 pt-6 border-t border-slate-100 dark:border-[#1F1F22] text-center"
+                >
+                  <p
+                    class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1"
+                  >
+                    Nota Média (Geral)
+                  </p>
+                  <p
+                    class="text-5xl font-extrabold text-slate-900 dark:text-white font-mono tracking-tighter"
+                  >
+                    4.2
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- BEGIN: Timeline of Events (Center) -->
+            <section class="lg:col-span-5">
+              <div
+                class="bg-white dark:bg-[#0A0A0A] rounded-2xl border border-slate-200 dark:border-[#1F1F22] p-6 shadow-sm h-full"
+              >
+                <div class="flex items-center justify-between mb-8">
+                  <div
+                    class="flex items-center gap-2 text-slate-900 dark:text-white"
+                  >
+                    <svg
+                      class="h-5 w-5 text-slate-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                      ></path>
+                    </svg>
+                    <h2 class="text-lg font-bold">Eventuais &amp; Marcos</h2>
+                  </div>
+                  <button
+                    class="text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700"
+                  >
+                    + Add
+                  </button>
+                </div>
+
+                <div class="relative space-y-8 pb-4 pl-2">
+                  <!-- Vertical Line -->
+                  <div
+                    class="absolute left-4 top-2 h-full w-0.5 bg-slate-100 dark:bg-[#1F1F22]"
+                  ></div>
+
+                  <!-- Entry 1 -->
+                  <div class="relative pl-10">
+                    <div
+                      class="absolute left-0 top-1.5 h-4 w-4 rounded-full border-[3px] border-white dark:border-[#0A0A0A] bg-blue-500 shadow-sm ml-[6px]"
+                    ></div>
+                    <div>
+                      <p
+                        class="text-[10px] font-bold text-slate-400 uppercase mb-1"
+                      >
+                        15 Maio, 2024
+                      </p>
+                      <h3
+                        class="text-sm font-bold text-slate-900 dark:text-white"
+                      >
+                        Acompanhamento Mensal
+                      </h3>
+                      <p
+                        class="text-xs text-slate-600 dark:text-[#A1A1AA] mt-1 leading-relaxed"
+                      >
+                        Revisão trimestral com Sarah. Discutido progresso sobre
+                        o dashboard LLM. Feedback: "Focar mais em documentação."
+                      </p>
+                      <span
+                        class="inline-flex mt-2 px-2 py-0.5 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 text-[10px] font-bold rounded-md uppercase border border-blue-200 dark:border-blue-500/20 tracking-wider"
+                        >Check-in</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Entry 2 -->
+                  <div class="relative pl-10">
+                    <div
+                      class="absolute left-0 top-1.5 h-4 w-4 rounded-full border-[3px] border-white dark:border-[#0A0A0A] bg-green-500 shadow-sm ml-[6px]"
+                    ></div>
+                    <div>
+                      <p
+                        class="text-[10px] font-bold text-slate-400 uppercase mb-1"
+                      >
+                        22 Abr, 2024
+                      </p>
+                      <h3
+                        class="text-sm font-bold text-slate-900 dark:text-white"
+                      >
+                        Marco Atingido: Integração de API
+                      </h3>
+                      <p
+                        class="text-xs text-slate-600 dark:text-[#A1A1AA] mt-1 leading-relaxed"
+                      >
+                        Conectou com sucesso o data lake interno ao proxy do
+                        GPT-4 com latência otimizada.
+                      </p>
+                      <span
+                        class="inline-flex mt-2 px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 text-[10px] font-bold rounded-md uppercase border border-green-200 dark:border-green-500/20 tracking-wider"
+                        >Marco</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Entry 3 -->
+                  <div class="relative pl-10">
+                    <div
+                      class="absolute left-0 top-1.5 h-4 w-4 rounded-full border-[3px] border-white dark:border-[#0A0A0A] bg-amber-500 shadow-sm ml-[6px]"
+                    ></div>
+                    <div>
+                      <p
+                        class="text-[10px] font-bold text-slate-400 uppercase mb-1"
+                      >
+                        05 Abr, 2024
+                      </p>
+                      <h3
+                        class="text-sm font-bold text-slate-900 dark:text-white"
+                      >
+                        Sessão de Feedback: Comunicação
+                      </h3>
+                      <p
+                        class="text-xs text-slate-600 dark:text-[#A1A1AA] mt-1 leading-relaxed"
+                      >
+                        Participou do workshop intensivo sobre reuniões e sprint
+                        planning.
+                      </p>
+                      <span
+                        class="inline-flex mt-2 px-2 py-0.5 bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:amber-500 text-[10px] font-bold rounded-md uppercase border border-amber-200 dark:border-amber-500/20 tracking-wider"
+                        >Feedback</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- BEGIN: Manager Notes (Right) -->
+            <section class="lg:col-span-3 space-y-6">
+              <div
+                class="bg-white dark:bg-[#0A0A0A] rounded-2xl border border-slate-200 dark:border-[#1F1F22] p-6 shadow-sm flex flex-col h-full overflow-hidden"
+              >
+                <div
+                  class="flex items-center gap-2 mb-6 text-slate-900 dark:text-white"
+                >
+                  <svg
+                    class="h-5 w-5 text-slate-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    ></path>
+                  </svg>
+                  <h2 class="text-lg font-bold">Notas Privadas (Gestão)</h2>
+                </div>
+
+                <div
+                  class="space-y-4 mb-6 overflow-y-auto max-h-[300px] custom-scrollbar pr-1 flex-1"
+                >
+                  <!-- Note 1 -->
+                  <div
+                    class="bg-slate-50 dark:bg-[#111] border border-slate-100 dark:border-[#1F1F22] p-4 rounded-xl"
+                  >
+                    <div class="flex justify-between items-center mb-1">
+                      <span
+                        class="text-[10px] font-bold text-slate-400 font-mono tracking-wider"
+                        >02 JUN - POR SARAH J.</span
+                      >
+                    </div>
+                    <p
+                      class="text-xs text-slate-600 dark:text-[#A1A1AA] italic leading-relaxed"
+                    >
+                      "Mostra grande curiosidade durante os standups. Ideal para
+                      o próximo projeto P&amp;D."
+                    </p>
+                  </div>
+                  <!-- Note 2 -->
+                  <div
+                    class="bg-slate-50 dark:bg-[#111] border border-slate-100 dark:border-[#1F1F22] p-4 rounded-xl"
+                  >
+                    <div class="flex justify-between items-center mb-1">
+                      <span
+                        class="text-[10px] font-bold text-slate-400 font-mono tracking-wider"
+                        >20 MAI - POR SARAH J.</span
+                      >
+                    </div>
+                    <p
+                      class="text-xs text-slate-600 dark:text-[#A1A1AA] italic leading-relaxed"
+                    >
+                      "Verificar se já concluiu os padrões avançados de React
+                      antes de repassar a task #1102."
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="mt-auto pt-4 border-t border-slate-100 dark:border-[#1F1F22]"
+                >
+                  <textarea
+                    class="block w-full px-3 py-3 text-[13px] border border-slate-200 dark:border-[#1F1F22] bg-slate-50 dark:bg-[#111111] rounded-xl focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none placeholder-slate-400 dark:placeholder-slate-600 h-20"
+                    placeholder="Escreva uma nota..."
+                    rows="2"
+                  ></textarea>
+                  <button
+                    class="w-full mt-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-slate-50 border border-transparent py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm"
+                  >
+                    Salvar Nota
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Theme toggle functionality
+      const themeToggleBtn = document.getElementById("themeToggle");
+
+      const updateThemeUI = () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        if (themeToggleBtn) {
+          themeToggleBtn.setAttribute(
+            "aria-checked",
+            isDark ? "true" : "false",
+          );
+        }
+      };
+
+      // Initialize UI
+      updateThemeUI();
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const isDark = document.documentElement.classList.contains("dark");
+          localStorage.theme = isDark ? "dark" : "light";
+          updateThemeUI();
+        });
+      }
+
+      // Sidebar collapse functionality
+      const sidebar = document.getElementById("sidebar");
+      const toggleSidebarBtn = document.getElementById("toggleSidebar");
+      const titleToggleBtn = document.getElementById("titleToggleSidebar");
+      const chevronIcon = document.getElementById("chevron-icon");
+
+      const handleSidebarToggle = () => {
+        if (window.innerWidth < 768) {
+          // Mobile behavior: close the sidebar completely
+          sidebar.classList.remove("translate-x-0");
+          sidebar.classList.add("-translate-x-full");
+          sidebarOverlay.classList.add("hidden");
+        } else {
+          // Desktop behavior: expand/collapse
+          if (sidebar.classList.contains("sidebar-expanded")) {
+            sidebar.classList.remove("sidebar-expanded");
+            sidebar.classList.add("sidebar-collapsed");
+            if (chevronIcon)
+              chevronIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path>`; // Point right
+          } else {
+            sidebar.classList.remove("sidebar-collapsed");
+            sidebar.classList.add("sidebar-expanded");
+            if (chevronIcon)
+              chevronIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>`; // Point left
+          }
+        }
+      };
+
+      if (toggleSidebarBtn)
+        toggleSidebarBtn.addEventListener("click", handleSidebarToggle);
+      if (titleToggleBtn)
+        titleToggleBtn.addEventListener("click", handleSidebarToggle);
+
+      // Mobile Menu Logic
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener("click", () => {
+          sidebar.classList.remove("-translate-x-full");
+          sidebar.classList.add("translate-x-0");
+          sidebarOverlay.classList.remove("hidden");
+          sidebar.classList.add("sidebar-expanded");
+          sidebar.classList.remove("sidebar-collapsed");
+        });
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener("click", () => {
+          sidebar.classList.remove("translate-x-0");
+          sidebar.classList.add("-translate-x-full");
+          sidebarOverlay.classList.add("hidden");
+        });
+      }
+    </script>
+  </body>
+</html>
