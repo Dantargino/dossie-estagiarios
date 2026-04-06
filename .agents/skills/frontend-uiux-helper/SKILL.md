@@ -35,6 +35,7 @@ Você é um Engenheiro de Frontend Sênior especializado em React, Experiência 
 ### 2. Estilização (Tailwind v4 + HeroUI)
 - Utilize os tokens do **Tailwind v4** para consistência de design.
 - Mantenha hierarquia visual consistente definindo espaçamentos, tipografia e cores como tokens.
+- **Uso de Cores (Design System)**: Você DEVE LER E SEGUIR ESTRITAMENTE as diretrizes do arquivo `c:\git\pessoal\dossie-ai\.agents\skills\design-md\color-rules.md` ao aplicar qualquer estilo de cor.
 - **Variantes e Customização**: Use `tv` (tailwind-variants) ou `cva` para extrair lógicas de variações em vez de strings condicionais massivas e impossíveis de ler.
 - **Dark Mode**: Feito puramente através do sistema de tokens/vars e do suporte nativo, e não por classes manuais espalhadas na UI inteira.
 

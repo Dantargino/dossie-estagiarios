@@ -71,10 +71,10 @@ To analyze a Stitch project, you must retrieve screen metadata and design assets
 Evaluate the screenshot and HTML structure to capture the overall "vibe." Use evocative adjectives to describe the mood (e.g., "Airy," "Dense," "Minimalist," "Utilitarian").
 
 ### 3. Map the Color Palette (Tailwind Config/JSON)
-Identify the key colors in the system. For each color, provide:
+Identify the key colors in the system. IMPORTANT: You MUST cross-reference and align any extracted colors with the semantic rules defined in `c:\git\pessoal\dossie-ai\.agents\skills\design-md\color-rules.md`. For each color, provide:
 - A descriptive, natural language name that conveys its character (e.g., "Deep Muted Teal-Navy")
 - The specific hex code in parentheses for precision (e.g., "#294056")
-- Its specific functional role (e.g., "Used for primary actions")
+- Its specific functional role (e.g., "Used for primary actions", verifying against `color-rules.md`)
 
 ### 4. Translate Geometry & Shape (CSS/Tailwind)
 Convert technical `border-radius` and layout values into physical descriptions:

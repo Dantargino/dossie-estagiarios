@@ -40,6 +40,7 @@ Before calling any Stitch generation or editing tool, you MUST enhance the user'
 ### 1. Analyze Context
 - **Project Scope**: Maintain the current `projectId`. Use `list_projects` if unknown.
 - **Design System**: Check for `.stitch/DESIGN.md`. If it exists, incorporate its tokens (colors, typography). If not, suggest the `generate-design-md` workflow.
+- **Color Rules (CRITICAL)**: You MUST read and follow the semantic color mappings defined in `c:\git\pessoal\dossie-ai\.agents\skills\design-md\color-rules.md`. Ensure your prompts use the correct colors for given contexts (e.g., jade-green for success/primary).
 
 ### 2. Refine UI/UX Terminology
 Consult [Design Mappings](references/design-mappings.md) to replace vague terms.
